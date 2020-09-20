@@ -1,0 +1,57 @@
+创建数据库以及表
+====================================
+
+&emsp;&emsp;在任何关系数据库管理系统(RDBMS Relational Database Management System)中，数据都存储在“行”中。
+而其中所能容纳的列数必须在创建表的时候定义。这也是RDBMS的主要局限。虽然我们可以随时更改表的定义，但是更改的同时
+整个表都需要重构，且在某些情况下，表在被修改时将不可用。更改表的结构：第九章。  
+&emsp;&emsp;数据库和表称为数据库对象。任何操作（CRUD）都称为数据定义语言（DDL Data Definition Language）操作。  
+&emsp;&emsp;根据按某种蓝图组织构建数据库（分为数据库和表），这种数据的组织形式称为`schema`。  
+
+### 创建数据库
+#### 连接到MySQL服务器：  
+    mysql -u root -p
+    CREATE DATABASE company;
+    CREATE DATABASE `my.contact';
+当表中存在特殊字符的时候，使用反标记符(`)进行声明。  
+
+#### 数据库切换：
+    USE company
+    mysql -u root -p company
+    
+#### 当前连接的数据库：
+    SELECT DATABSE();
+    
+#### 查询有访问权限的数据库：  
+    SHOW DATABASES;
+    
+### 创建数据表
+在表中定义列的时候，应指定列的__名称，数据类型和默认值__(若存在)
+1. 数字: TINYINT, SMALLINT, MEDIUMINT, INT, BIGINT, BIT.
+2. 浮点数： DECIMAL, FLOAT, DOUBLE.
+3. 字符串: CHAR, VARCHAR, BINARY, VARBINARY, BLOB, TEXT, ENUM, SET.
+4. Spatial 数据类型: [Spatial Data Type](https://dev.mysql.com/doc/refman/8.0/en/spatial-types.html)  
+
+[Spatial Function Reference](https://dev.mysql.com/doc/refman/8.0/en/spatial-function-reference.html)
+5. JSON数据类型：第三章。
+
+    CREATE TABLE IF NOT EXITS 'company'.'customers' (
+    'id' int unsigned AUTO_INCREMENT PRIMARY KEY,
+    'first_name' varchar(20),
+    'last_name' varchar(20),
+    'country' varchar(20)
+    ) ENGINE=InnoDB;
+- 句点符号：database.table, 如果已经连接数据库，直接customers
+- PRIMARY KEY: 每行都由一个非空的UNIQUE列标识。一个表只有一个PK。如果一个表包含AUTO_INCREMENT列，则其会被视为PK。
+- varchar是一种更加灵活的char，可以保存可变长度的字符串。（只要小于（）中的长度就可以）。
+- Engine：包括InnoDB, MyISAM, FEDERATED, BLACKHOLE, CSV, MEMORY. InnoDB是唯一的事物引擎。 
+
+#### 列出所有表：
+    SHOW TABLES;
+
+#### 查看表的结构：
+    SHOW CREATE TABLE customers\G;
+    OR
+    DESC customers;(description)
+    
+#### 克隆表的结构：
+    CREATE TABLE new_customers LIKE customers;
